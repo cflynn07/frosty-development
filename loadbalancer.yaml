@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: frosty-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /graphql
+        backend:
+          serviceName: frosty-api
+          servicePort: api-port
+      - path: /
+        backend:
+          serviceName: frosty-web
+          servicePort: web-port

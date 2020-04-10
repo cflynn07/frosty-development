@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frosty-mysql
+  labels:
+    app: frosty-mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: mysql-port
+      protocol: TCP
+      name: mysql
+  selector:
+    app: frosty-mysql
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frosty-mysql
+  labels:
+    app: frosty-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frosty-mysql
+  template:
+    metadata:
+      labels:
+        app: frosty-mysql
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: frosty-mysql
+          image: frosty-mysql
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: MYSQL_DATABASE
+              value: "frosty"
+          ports:
+            - name: mysql-port
+              containerPort: 3306
+          livenessProbe:
+            exec:
+              command:
+              - whoami
+            initialDelaySeconds: 3
+            periodSeconds: 3

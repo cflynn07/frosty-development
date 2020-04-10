@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jide-web
+  labels:
+    app: jide-web
+spec:
+  ports:
+    - port: 80
+      targetPort: jide-web-port
+      protocol: TCP
+      name: http
+  selector:
+    app: jide-web
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jide-web
+  labels:
+    app: jide-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jide-web
+  template:
+    metadata:
+      labels:
+        app: jide-web
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: jide-web
+          image: jide-web
+          ports:
+            - name: jide-web-port
+              containerPort: 80
+          livenessProbe:
+            exec:
+              command:
+              - whoami
+            initialDelaySeconds: 3
+            periodSeconds: 3
