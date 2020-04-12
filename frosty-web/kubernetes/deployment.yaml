@@ -1,42 +1,42 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jide-web
+  name: frosty-web
   labels:
-    app: jide-web
+    app: frosty-web
 spec:
   ports:
     - port: 80
-      targetPort: jide-web-port
+      targetPort: web-port
       protocol: TCP
       name: http
   selector:
-    app: jide-web
+    app: frosty-web
 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jide-web
+  name: frosty-web
   labels:
-    app: jide-web
+    app: frosty-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jide-web
+      app: frosty-web
   template:
     metadata:
       labels:
-        app: jide-web
+        app: frosty-web
     spec:
       terminationGracePeriodSeconds: 0
       containers:
-        - name: jide-web
-          image: jide-web
+        - name: frosty-web
+          image: frosty-web
           ports:
-            - name: jide-web-port
+            - name: web-port
               containerPort: 80
           livenessProbe:
             exec:

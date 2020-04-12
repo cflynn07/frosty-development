@@ -1,35 +1,32 @@
-import React, { Component } from 'react'
-import { ApolloProvider, useQuery } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import React, { useState, useContext } from 'react'
 
-import client from '../utils/client.js'
+import LoginForm from './LoginForm.js'
 
-const GET_VIEWER = gql`
-  query {
-    viewer {
-      name
-      email
-    }
-  }
-`
-
-const User = () => {
-  const { data, loading, error } = useQuery(GET_VIEWER)
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error...</p>
-  return (
-    <div className='App'>
-      <p>Name: {data.viewer.name}</p>
-      <p>Email: {data.viewer.email}</p>
-    </div>
-  )
-}
+const ThemeContext = React.createContext('light')
 
 const App = () => {
+  const [name, setName] = useState('Frank')
+  const theme = useContext(ThemeContext)
+
+  function handleNameClick () {
+    setName(Math.random() + '')
+  }
+
+  function handleNameChange (e) {
+    setName(e.target.value)
+  }
+
   return (
-    <ApolloProvider client={client}>
-      <User />
-    </ApolloProvider>
+    <>
+      <h1 onClick={handleNameClick}>{name}</h1>
+      <h2>Theme is: {theme}</h2>
+      <input
+        type='text'
+        value={name}
+        onChange={handleNameChange}
+      />
+      <LoginForm />
+    </>
   )
 }
 
