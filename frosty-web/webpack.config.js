@@ -41,8 +41,7 @@ module.exports = {
     hotOnly: true,
     disableHostCheck: true,
     host: '0.0.0.0',
-    historyApiFallback: true,
-    clientLogLevel: 'debug'
+    historyApiFallback: true
   },
   devtool: 'inline-source-map',
   plugins: [

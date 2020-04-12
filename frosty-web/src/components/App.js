@@ -1,10 +1,9 @@
 import React from 'react'
 
-import TodoListsMenu from './TodoListsMenu.js'
 import TodoList from './TodoList.js'
+import TodoListsMenu from './TodoListsMenu.js'
 
 const App = () => {
-  // const todoLists = [{ id: 1, name: 'first' }, { id: 2, name: 'second' }]
   return (
     <div className='container'>
       <h1>Frosty Todo Demo App</h1>
