@@ -4,6 +4,7 @@ const initialState = {
     name: 'Casey',
     email: 'cflynn.us@gmail.com'
   },
+  activeTodoListId: 1,
   todoLists: [
     {
       id: 1,
@@ -34,8 +35,8 @@ const initialState = {
 }
 
 export default function rootReducer (state = initialState, action) {
-  console.log(action.type)
-  switch (action) {
+  console.log(action)
+  switch (action.type) {
     case 'LOGIN_USER':
       break
     case 'CREATE_TODO':
@@ -48,6 +49,16 @@ export default function rootReducer (state = initialState, action) {
       break
     case 'DELETE_TODO_LIST':
       break
+    case 'UPDATE_ACTIVE_TODO_LIST_ID':
+      console.log('here')
+      console.log({
+        ...state,
+        activeTodoListId: action.id
+      })
+      return {
+        ...state,
+        activeTodoListId: action.id
+      }
     default:
       return state
   }

@@ -40,7 +40,9 @@ module.exports = {
     publicPath: 'http://localhost/',
     hotOnly: true,
     disableHostCheck: true,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    historyApiFallback: true,
+    clientLogLevel: 'debug'
   },
   devtool: 'inline-source-map',
   plugins: [

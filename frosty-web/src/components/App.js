@@ -7,9 +7,8 @@ const App = () => {
   // const todoLists = [{ id: 1, name: 'first' }, { id: 2, name: 'second' }]
   return (
     <div className='container'>
-      <div className='row'>
-        <div className='col'><h1>TODO LIST APP</h1></div>
-      </div>
+      <h1>Frosty Todo Demo App</h1>
+      <hr />
       <div className='row'>
         <div className='col-4'>
           <TodoListsMenu />
