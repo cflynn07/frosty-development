@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './index.js',
+  entry: './src/index.js',
   mode: 'development',
   module: {
     rules: [
@@ -26,7 +26,9 @@ module.exports = {
       }
     ]
   },
-  resolve: { extensions: ['*', '.js', '.jsx'] },
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
+  },
   output: {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '/',
@@ -44,7 +46,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: './index.html'
+      template: './src/index.html'
     })
   ]
 }
