@@ -1,11 +1,14 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
+    jest: true
   },
   extends: [
     'plugin:react/recommended',
-    'standard'
+    'standard',
+    'plugin:testing-library/recommended',
+    'plugin:testing-library/react'
   ],
   globals: {
     Atomics: 'readonly',
@@ -20,7 +23,8 @@ module.exports = {
   },
   plugins: [
     'react',
-    'react-hooks'
+    'react-hooks',
+    'testing-library'
   ],
   rules: {
     'react-hooks/rules-of-hooks': 'error',

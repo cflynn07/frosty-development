@@ -16,6 +16,9 @@ const TodoList = () => {
   })
   const location = useLocation()
   const activeTodoList = getActiveTodoList(todoLists, location)
+  if (typeof activeTodoList === 'undefined') {
+    return <ul className='list-group'></ul>
+  }
 
   function handleClick (itemId) {
     dispatch(deleteTodoListItem(activeTodoList.id, itemId))

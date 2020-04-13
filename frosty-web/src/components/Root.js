@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import App from './App.js'
@@ -9,8 +9,10 @@ const Root = ({ store }) => {
   return (
     <Provider store={store}>
       <Router>
-        <Route path='/' exact component={App} />
-        <Route path='/list/:list' component={App} />
+        <Switch>
+          <Route path='/' component={App} />
+          <Route path='/list/:list' component={App} />
+        </Switch>
       </Router>
     </Provider>
   )
