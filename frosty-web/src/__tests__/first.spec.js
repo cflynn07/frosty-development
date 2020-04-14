@@ -1,13 +1,14 @@
 import React from 'react'
 
+import * as TestUtils from '../test-utils.js'
+
 import * as Reducers from '../reducers'
 import * as Actions from '../actions'
 
 import Basic from '../components/Basic.js'
-import TodoListsMenu from '../components/TodoListsMenu.js'
 
 import {
-  render,
+  // render,
   fireEvent,
   cleanup
 } from '@testing-library/react'
@@ -57,7 +58,7 @@ describe('default initial state', () => {
   it('shows counter and clicking button increments counter', () => {
     const {
       getByText
-    } = render(<Basic />)
+    } = TestUtils.getWrapper(<Basic />)
     expect(getByText(/0/).textContent).toBe('0')
     fireEvent.click(getByText(/Increment/i))
     expect(getByText(/1/).textContent).toBe('1')
@@ -111,5 +112,11 @@ describe('default initial state', () => {
       ]
     }
     expect(newState).toEqual(expectedNewState)
+  })
+
+  it('test of initial state of reducer', () => {
+    Reducers.rootReducer(expectedInitialReducerState, {
+      type: 'LOGIN_USER1'
+    })
   })
 })

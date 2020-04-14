@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test-watch": "jest --watchAll",
     "start": "webpack-dev-server --mode development"
   },
   "keywords": [],

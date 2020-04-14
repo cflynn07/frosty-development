@@ -1,4 +1,5 @@
-node_modules
-__snapshots__
 .DS_Store
 Session.vim
+__snapshots__
+coverage
+node_modules

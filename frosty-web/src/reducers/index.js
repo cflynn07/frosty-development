@@ -39,7 +39,6 @@ export const initialState = {
 }
 
 export function rootReducer (state = initialState, action) {
-  console.log(action)
   switch (action.type) {
     case 'LOGIN_USER':
       break
