@@ -2,12 +2,18 @@ apiVersion: skaffold/v2beta1
 kind: Config
 build:
   artifacts:
-    #- image: frosty-web
-    #  sync:
-    #    manual:
-    #      - src: '**/*.js'
-    #        dest: '/usr/src/app'
-    #  context: ./frosty-web/
+    - image: frosty-web
+      context: ./frosty-web/
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: '/usr/src/app'
+          - src: '**/*.css'
+            dest: '/usr/src/app'
+          - src: '**/*.sass'
+            dest: '/usr/src/app'
+          - src: '**/*.html'
+            dest: '/usr/src/app'
     - image: frosty-api
       context: ./frosty-api/
     - image: frosty-mysql
@@ -17,6 +23,6 @@ deploy:
   kubectl:
     manifests:
       - ./loadbalancer.yaml
-      #- ./frosty-web/kubernetes/*
+      - ./frosty-web/kubernetes/*
       - ./frosty-api/kubernetes/*
       - ./frosty-mysql/kubernetes/*
