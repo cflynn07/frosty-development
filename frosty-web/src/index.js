@@ -4,9 +4,9 @@ import { createStore } from 'redux'
 
 import './index.sass'
 import Root from './components/Root.js'
-import rootReducer from './reducers'
+import * as Reducers from './reducers'
 
-const store = createStore(rootReducer)
+const store = createStore(Reducers.rootReducer)
 
 ReactDOM.render(
   <Root store={store} />,

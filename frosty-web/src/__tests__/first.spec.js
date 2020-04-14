@@ -1,6 +1,8 @@
 import React from 'react'
 
-import * as Reducer from '../reducers'
+import * as Reducers from '../reducers'
+import * as Actions from '../actions'
+
 import Basic from '../components/Basic.js'
 import TodoListsMenu from '../components/TodoListsMenu.js'
 
@@ -9,6 +11,46 @@ import {
   fireEvent,
   cleanup
 } from '@testing-library/react'
+
+const expectedInitialReducerState = {
+  user: {
+    id: 1,
+    name: 'Casey',
+    email: 'cflynn.us@gmail.com'
+  },
+  todoLists: [
+    {
+      id: 1,
+      name: 'House Chores 1',
+      todos: [
+        {
+          id: 1,
+          value: 'Mow Lawn',
+          completed: false
+        }, {
+          id: 2,
+          value: 'Clean Dishes',
+          completed: false
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: 'Work',
+      todos: [
+        {
+          id: 1,
+          value: 'Call Accountant',
+          completed: false
+        }, {
+          id: 2,
+          value: 'File Taxes',
+          completed: false
+        }
+      ]
+    }
+  ]
+}
 
 describe('default initial state', () => {
   afterEach(cleanup)
@@ -22,7 +64,17 @@ describe('default initial state', () => {
   })
 
   it('test of initial state of reducer', () => {
-    expect(Reducer.initialState).toEqual({
+    expect(Reducers.initialState).toEqual(expectedInitialReducerState)
+  })
+
+  it('reducer removes a todo list item', () => {
+    expect(Reducers.initialState).toEqual(expectedInitialReducerState)
+    const todoListId = 1
+    const itemId = 1
+    const newState = Reducers.rootReducer(
+      Reducers.initialState,
+      Actions.deleteTodoListItem(todoListId, itemId))
+    const expectedNewState = {
       user: {
         id: 1,
         name: 'Casey',
@@ -33,11 +85,8 @@ describe('default initial state', () => {
           id: 1,
           name: 'House Chores 1',
           todos: [
+            // deleted
             {
-              id: 1,
-              value: 'Mow Lawn',
-              completed: false
-            }, {
               id: 2,
               value: 'Clean Dishes',
               completed: false
@@ -59,8 +108,8 @@ describe('default initial state', () => {
             }
           ]
         }
-
       ]
-    })
+    }
+    expect(newState).toEqual(expectedNewState)
   })
 })

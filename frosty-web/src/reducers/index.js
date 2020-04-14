@@ -38,7 +38,7 @@ export const initialState = {
   ]
 }
 
-export default function rootReducer (state = initialState, action) {
+export function rootReducer (state = initialState, action) {
   console.log(action)
   switch (action.type) {
     case 'LOGIN_USER':
