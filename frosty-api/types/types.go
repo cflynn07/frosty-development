@@ -4,9 +4,11 @@ import "github.com/graphql-go/graphql"
 
 // User represents a "user" record in the database
 type User struct {
-	Email   string `json:"email"`
-	Idusers int    `json:"idusers"`
-	Name    string `json:"name"`
+	Email          string `json:"email"`
+	Idusers        int    `json:"idusers"`
+	Name           string `json:"name"`
+	Password       string `json:"password"`
+	BcryptPassword string `json:"bcrypt_password"`
 }
 
 // GQLUser represents the "user" graphql resource

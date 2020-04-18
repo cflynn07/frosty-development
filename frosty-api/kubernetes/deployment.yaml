@@ -44,6 +44,8 @@ spec:
               value: "root"
             - name: MYSQL_DB
               value: "frosty"
+            - name: JWT_SECRET
+              value: "i_would_use_a_k8s_secret_here"
           ports:
             - name: api-port
               containerPort: 80

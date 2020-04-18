@@ -6,9 +6,10 @@ import (
 	"os"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql" // required by gorm
 )
 
+// DB global database client
 var DB *gorm.DB
 
 func init() {
@@ -37,4 +38,5 @@ func init() {
 		fmt.Println(err)
 		panic("failed to connect database")
 	}
+	DB.LogMode(true)
 }
