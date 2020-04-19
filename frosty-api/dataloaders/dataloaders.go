@@ -24,12 +24,6 @@ func GetUserByUsernameAndPassword(email string, password string) (*types.User, e
 		return nil, nil
 	}
 
-	fmt.Println("user found")
-	fmt.Println(user.Email)
-	fmt.Println(user.Password)
-	fmt.Println(user.BcryptPassword)
-	fmt.Println(password)
-
 	// Since we'll be getting the hashed password from the DB it
 	// will be a string so we'll need to convert it to a byte slice
 	err := bcrypt.CompareHashAndPassword([]byte(user.BcryptPassword), []byte(password))
@@ -40,5 +34,15 @@ func GetUserByUsernameAndPassword(email string, password string) (*types.User, e
 
 	fmt.Println("password match")
 
+	return user, nil
+}
+
+// GetUserByEmail returns a user
+func GetUserByEmail(email string) (*types.User, error) {
+	user := &types.User{}
+	if err := database.DB.Where("email = ?", email).First(user).Error; gorm.IsRecordNotFoundError(err) {
+		// record not found
+		return nil, nil
+	}
 	return user, nil
 }

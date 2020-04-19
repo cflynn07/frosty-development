@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -19,17 +20,6 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func executeQuery(query string, schema graphql.Schema) *graphql.Result {
-	result := graphql.Do(graphql.Params{
-		Schema:        schema,
-		RequestString: query,
-	})
-	if len(result.Errors) > 0 {
-		fmt.Printf("errors: %v", result.Errors)
-	}
-	return result
-}
-
 var jwtSecret []byte = []byte(os.Getenv("JWT_SECRET"))
 
 func healthcheckHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +28,11 @@ func healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func graphqlHandler(w http.ResponseWriter, r *http.Request) {
-	result := executeQuery(r.URL.Query().Get("query"), schema.Schema)
+	result := graphql.Do(graphql.Params{
+		Schema:        schema.Schema,
+		RequestString: r.URL.Query().Get("query"),
+		Context:       context.WithValue(context.Background(), "token", r.Header.Get("X-Authorization-Token")),
+	})
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -67,8 +61,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email":    user.Email,
-		"password": user.Password,
+		"email": user.Email,
 	})
 	tokenString, error := token.SignedString(jwtSecret)
 	if error != nil {
@@ -80,18 +73,13 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		log.Fatal("Missing ENV: PORT")
-	}
-
 	router := mux.NewRouter()
-
 	router.HandleFunc("/healthz", healthcheckHandler).Methods("GET")
 	router.HandleFunc("/api/graphql", graphqlHandler).Methods("GET")
 	router.HandleFunc("/api/login", loginHandler).Methods("POST")
 
 	go func() {
+		port := os.Getenv("PORT")
 		fmt.Println("Server is running on port ", port)
 		panic(http.ListenAndServe(":"+port, router))
 	}()

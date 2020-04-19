@@ -1,1 +1,2 @@
-
+# testing
+$ watch -t -p ./ go test -v -cover ./...

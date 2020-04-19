@@ -37,7 +37,7 @@ spec:
           image: frosty-api
           env:
             - name: PORT
-              value: "80"
+              value: "3000"
             - name: MYSQL_HOST
               value: "frosty-mysql"
             - name: MYSQL_USER
