@@ -17,7 +17,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 
-	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/handler"
 )
 
 var jwtSecret []byte = []byte(os.Getenv("JWT_SECRET"))
@@ -25,15 +25,6 @@ var jwtSecret []byte = []byte(os.Getenv("JWT_SECRET"))
 func healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "ok")
-}
-
-func graphqlHandler(w http.ResponseWriter, r *http.Request) {
-	result := graphql.Do(graphql.Params{
-		Schema:        schema.Schema,
-		RequestString: r.URL.Query().Get("query"),
-		Context:       context.WithValue(context.Background(), "token", r.Header.Get("X-Authorization-Token")),
-	})
-	json.NewEncoder(w).Encode(result)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -72,10 +63,23 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{ "token": "` + tokenString + `" }`))
 }
 
+func httpHeaderMiddleware(next *handler.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), "token", r.Header.Get("X-Authorization-Token"))
+		next.ContextHandler(ctx, w, r)
+	})
+}
+
 func main() {
+	h := handler.New(&handler.Config{
+		Schema:   &schema.Schema,
+		Pretty:   false,
+		GraphiQL: false,
+	})
+
 	router := mux.NewRouter()
+	router.Handle("/api/graphql", httpHeaderMiddleware(h)).Methods("GET", "POST")
 	router.HandleFunc("/healthz", healthcheckHandler).Methods("GET")
-	router.HandleFunc("/api/graphql", graphqlHandler).Methods("GET")
 	router.HandleFunc("/api/login", loginHandler).Methods("POST")
 
 	go func() {

@@ -46,3 +46,16 @@ func GetUserByEmail(email string) (*types.User, error) {
 	}
 	return user, nil
 }
+
+// GetLists returns the lists of todos
+func GetLists() (*[]types.List, error) {
+	lists := &[]types.List{
+		{
+			Name: "list1",
+		},
+		{
+			Name: "list2",
+		},
+	}
+	return lists, nil
+}

@@ -1,6 +1,9 @@
 package types
 
-import "github.com/graphql-go/graphql"
+import (
+	"github.com/graphql-go/graphql"
+	"github.com/kr/pretty"
+)
 
 // User represents a "user" record in the database
 type User struct {
@@ -33,3 +36,48 @@ var GQLUser = graphql.NewObject(
 type List struct {
 	Name string `json:"name"`
 }
+
+var GQLList = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "List",
+		Fields: graphql.Fields{
+			"name": &graphql.Field{
+				Type: graphql.String,
+			},
+			"todos": &graphql.Field{
+				Type:        graphql.NewList(GQLTodo),
+				Description: "Get todos",
+				Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+					// return products, nil
+					// pretty.Println(params)
+					pretty.Println(params.Source)
+					return []Todo{
+						{
+							Value: params.Source.(List).Name + " first todo",
+							Done:  false,
+						},
+					}, nil
+				},
+			},
+		},
+	},
+)
+
+type Todo struct {
+	Value string `json:"value"`
+	Done  bool   `json:"done"`
+}
+
+var GQLTodo = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "Todo",
+		Fields: graphql.Fields{
+			"value": &graphql.Field{
+				Type: graphql.String,
+			},
+			"done": &graphql.Field{
+				Type: graphql.Boolean,
+			},
+		},
+	},
+)

@@ -61,6 +61,19 @@ var queryType = graphql.NewObject(
 					return user, nil
 				},
 			},
+			"lists": &graphql.Field{
+				Type:        graphql.NewList(types.GQLList),
+				Description: "returns the lists of todos for current organization",
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					// token, err := validateJWT(p.Context.Value("token").(string))
+					// email := token.(jwt.MapClaims)["email"].(string)
+					lists, err := dataloaders.GetLists()
+					if err != nil {
+						fmt.Println("error... handle this")
+					}
+					return lists, nil
+				},
+			},
 		},
 	},
 )
